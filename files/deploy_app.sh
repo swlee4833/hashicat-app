@@ -1,3 +1,7 @@
+set -euo pipefail
+
+cat << EOM > /var/www/html/index.html
+
 <!doctype html>
 <html lang="ko" data-theme="auto">
   <head>
@@ -181,3 +185,20 @@
     </script>
   </body>
 </html>
+EOM
+
+echo "Script complete."
+# Post-process replacements (safe sed with delimiter '|')
+sed -i \
+  -e "s|__TITLE__|${TITLE//|/\\|}|g" \
+  -e "s|__TAGLINE__|${TAGLINE//|/\\|}|g" \
+  -e "s|__PLACEHOLDER__|${PLACEHOLDER//|/\\|}|g" \
+  -e "s|__WIDTH__|${WIDTH//|/\\|}|g" \
+  -e "s|__HEIGHT__|${HEIGHT//|/\\|}|g" \
+  -e "s|__PREFIX__|${PREFIX//|/\\|}|g" \
+  -e "s|__CTA_TEXT__|${CTA_TEXT//|/\\|}|g" \
+  -e "s|__CTA_HREF__|${CTA_HREF//|/\\|}|g" \
+  -e "s|__THEME__|${THEME//|/\\|}|g" \
+  /var/www/html/index.html
+
+echo "✔ Web page generated at /var/www/html/index.html"
