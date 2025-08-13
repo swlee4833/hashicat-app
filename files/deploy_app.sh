@@ -1,3 +1,4 @@
+#!/bin/bash
 set -euo pipefail
 
 cat << EOM > /var/www/html/index.html
